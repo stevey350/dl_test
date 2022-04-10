@@ -1,0 +1,37 @@
+白色white_yamian_hengwen3 (有很多拉伸的数据)
+训练
+python -u -m torch.distributed.launch --nproc_per_node 2 --master_port 29502 main_ddp.py --train_data_path /workspace/ssj/datasets/white_yamian_hengwen3/part1/train/good/ --device_num 2,3  --mode train --data_name white_yamian_hengwen3
+
+断推
+python -u -m torch.distributed.launch --nproc_per_node 4 --master_port 29503 main_ddp.py  --data_name white_yamian_hengwen3 --device_num 0,1,2,3 --mode infer --autoencoderWeight /workspace/ssj/retinanet_cae/models_ddp/white_yamian_hengwen3/AnoSegDFR\(BN\)_resnet50_l3_d40_s4_k4_bilinear/train/autoencoder.pth --list_part part1 --data /workspace/ssj/datasets/ --result_save_path_forInf /workspace/ssj/results_output/
+
+
+
+白色white_yamian_hengwen9
+在docker内执行
+python -u -m torch.distributed.launch --nproc_per_node 4 --master_port 29502 main_ddp.py  --data_name white_yamian_hengwen9 --device_num 0,1,2,3 --mode infer --autoencoderWeight /workspace/ssj/retinanet_cae/models_ddp/white_yamian_hengwen9/AnoSegDFR\(BN\)_resnet50_l3_d40_s4_k4_bilinear/train/autoencoder.pth --list_part part1 --data /workspace/huayan_nfs/sushijian/ --result_save_path_forInf /workspace/backbone_check/dfr_od/ssj_result/
+
+
+数据放哪里了
+cvteam
+/raid/wxp/workspace/backbone_check/dfr_od/ssj_result
+
+
+灰色gray生成score_map
+python -u -m torch.distributed.launch --nproc_per_node 4 --master_port 29502 main_ddp.py  --data_name gray_beijing --device_num 0,1,2,3 --mode infer --autoencoderWeight /workspace/backbone_check/dfr_od/retinanet_cae.v0.2/models_ddp/gray_yamian_hengwen3/AnoSegDFR\(BN\)_resnet50_l3_d40_s4_k4_bilinear/train/autoencoder.pth --list_part part1 --data /workspace/huayan_nfs/sushijian/ --result_save_path_forInf /workspace/backbone_check/dfr_od/ssj_result/
+
+
+绿色green生成score_map
+python -u -m torch.distributed.launch --nproc_per_node 4 --master_port 29502 main_ddp.py  --data_name green_yamian_hengwen3 --device_num 0,1,2 --mode infer --autoencoderWeight /workspace/ssj/retinanet_cae/models_ddp/green_yamian_hengwen3/AnoSegDFR\(BN\)_resnet50_l3_d40_s4_k4_bilinear/train/autoencoder.pth --list_part part1 --data /workspace/huayan_nfs/sushijian/ --result_save_path_forInf /workspace/backbone_check/dfr_od/ssj_result/
+
+
+
+sudo python is_anomaly.py --input_img_dir /raid/huayan_nfs/sushijian/gray_beijing/part1/notqm --input_score_map_dir /raid/wxp/workspace/backbone_check/dfr_od/ssj_result/gray_beijing/resnet50/part1/score_map
+
+训练黑色带子
+python -u -m torch.distributed.launch --nproc_per_node 1 --master_port 29502 main_ddp.py --train_data_path /workspace/huayan_nfs/sushijian/black_yamian_hengwen3/part1/train/good/ --device_num 0  --mode train --data_name black_yamian_hengwen3
+
+
+推断生成黑色带子的scoremap
+python -u -m torch.distributed.launch --nproc_per_node 4 --master_port 29502 main_ddp.py  --data_name black_yamian_hengwen3 --device_num 0,1,2,3 --mode infer --autoencoderWeight /workspace/ssj/retinanet_cae/models_ddp/black_yamian_hengwen3/AnoSegDFR\(BN\)_resnet50_l3_d40_s4_k4_bilinear/train/autoencoder.pth --list_part part1 --data /workspace/ssj/datasets/ --result_save_path_forInf /workspace/ssj/results_output/
+
